@@ -1,4 +1,4 @@
-import fastZeroInflatedFactorAnalysis, githubFactorAnalysis
+import ZIFA
 import numpy as np
 from pylab import *
 import random
@@ -38,31 +38,15 @@ def generateFactorAnalysisData(params):
 def testAlgorithm():
 	d = 10
 	k = 2
-	n_to_run = 1
 	random.seed(30)
 	np.random.seed(32)
-	trials_run = 0
-	compare = True
-	for i in range(n_to_run):
-		print '\n\n****Running trial %i!' % (i + 1)
-		n = 20
-		sigma = np.random.random() * .2 + .1
-		mu = np.random.random() * .5 + 3
-		decay_coef = np.random.random() * .2
-		params = {'d': d, 'k': k, 'n': n, 'sigma': sigma, 'mu':mu, 'decay_coef':decay_coef}
-		X, Y, Z, true_params = generateFactorAnalysisData(params)
+	n = 200
+	sigma = np.random.random() * .2 + .1
+	mu = np.random.random() * .5 + 3
+	decay_coef = np.random.random() * .2
+	params = {'d': d, 'k': k, 'n': n, 'sigma': sigma, 'mu':mu, 'decay_coef':decay_coef}
+	X, Y, Z, true_params = generateFactorAnalysisData(params)
+	EZ, params = ZIFA.fitModel(Y, k)
 
-		EZ2, ll2, params2 = fastZeroInflatedFactorAnalysis.fitModel(Y, k)
-		EZ, params = githubFactorAnalysis.fitModel(Y, k)
-		
-		for p in params:
-			if not (np.allclose(params[p], params2[p], atol = 1e-6)):
-				print 'Parameters are not close', p, params[p], params2[p], params[p] - params2[p]
-				assert(False)
-		print EZ[0, :]
-		print EZ2[0, :]
-		assert(np.allclose(EZ, EZ2, atol = 1e-6))
-
-		trials_run += 1
 if __name__ == '__main__':
 	testAlgorithm()
