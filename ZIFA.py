@@ -6,6 +6,7 @@ from copy import deepcopy
 from collections import Counter
 import random
 from scipy.stats import multivariate_normal
+import warnings
 
 """
 Zero-inflated factor analysis (ZIFA). Performs dimensionality reduction on zero-inflated data. 
@@ -16,7 +17,6 @@ Z, model_params = fitModel(Y, k)
 
 where Y is the observed zero-inflated data, k is the desired number of latent dimensions, and Z is the low-dimensional projection. 
 """
-
 def mult_diag(d, mtx, left=True):
     """
     Multiply a full matrix by a diagonal matrix.
@@ -271,18 +271,20 @@ def decayCoefObjectiveFn(x, Y, EX2):
 	obj: value of objective function
 	grad: gradient
 	"""
-	y_squared = Y ** 2
-	Y_is_zero = np.abs(Y) < 1e-6
-	exp_Y_squared = np.exp(-x * y_squared)
-	log_exp_Y = np.nan_to_num(np.log(1 - exp_Y_squared))
-	exp_ratio = np.nan_to_num(exp_Y_squared / (1 - exp_Y_squared))
-	obj = sum(sum(Y_is_zero * (-EX2*x) + (1 - Y_is_zero) * log_exp_Y))
-	grad = sum(sum(Y_is_zero * (-EX2) + (1 - Y_is_zero) * y_squared * exp_ratio))
-	if type(obj) is np.float64:
-		obj = -np.array([obj])
-	if type(grad) is np.float64:
-		grad = -np.array([grad])
-	return obj, grad
+	with warnings.catch_warnings():
+		warnings.simplefilter("ignore")
+		y_squared = Y ** 2
+		Y_is_zero = np.abs(Y) < 1e-6
+		exp_Y_squared = np.exp(-x * y_squared)
+		log_exp_Y = np.nan_to_num(np.log(1 - exp_Y_squared))
+		exp_ratio = np.nan_to_num(exp_Y_squared / (1 - exp_Y_squared))
+		obj = sum(sum(Y_is_zero * (-EX2*x) + (1 - Y_is_zero) * log_exp_Y))
+		grad = sum(sum(Y_is_zero * (-EX2) + (1 - Y_is_zero) * y_squared * exp_ratio))
+		if type(obj) is np.float64:
+			obj = -np.array([obj])
+		if type(grad) is np.float64:
+			grad = -np.array([grad])
+		return obj, grad
 def exp_decay(x, decay_coef):
 	"""
 	squared exponential decay function.
