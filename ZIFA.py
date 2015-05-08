@@ -16,6 +16,8 @@ Sample usage:
 Z, model_params = fitModel(Y, k)
 
 where Y is the observed zero-inflated data, k is the desired number of latent dimensions, and Z is the low-dimensional projection. 
+
+See example.py for a full example.
 """
 def mult_diag(d, mtx, left=True):
     """
