@@ -12,7 +12,7 @@ Z, model_params = ZIFA.fitModel(Y, k)
 
 where Y is the observed zero-inflated data, k is the desired number of latent dimensions, and Z is the low-dimensional projection. 
 
-See example.py for a full example.
+See example.py for a full example demonstrating superior performance over factor analysis. 
 
 This code requires pylab, scipy, numpy, and scikits.learn for full functionality. 
  
