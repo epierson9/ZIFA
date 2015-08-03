@@ -1,5 +1,5 @@
 # ZIFA
-Zero-inflated dimensionality reduction algorithm for single-cell data.
+Zero-inflated dimensionality reduction algorithm for single-cell data. Created by Emma Pierson and Christopher Yau.
 
 If you are using count data, we recommend taking the log (ie, Y = log2(1 + count_data)) prior to using ZIFA. 
 
