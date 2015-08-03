@@ -16,7 +16,7 @@ This code requires pylab, scipy, numpy, and scikits.learn for full functionality
 
 Please contact emmap1@cs.stanford.edu with any questions or comments. 
 
-#Sample usage
+##Sample usage
 
 import ZIFA
 
