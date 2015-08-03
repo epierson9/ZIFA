@@ -14,6 +14,8 @@ See example.py for a full example demonstrating superior performance over factor
 
 This code requires pylab, scipy, numpy, and scikits.learn for full functionality. 
 
+Please contact emmap1@cs.stanford.edu with any questions or comments. 
+
 #Sample usage
 
 import ZIFA
