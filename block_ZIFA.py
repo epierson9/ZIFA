@@ -465,7 +465,10 @@ def fitModel(Y, K, singleSigma = False, n_blocks = None):
 				block_EX2s.append(block_EX2)
 			EZ[i], EZZT[i], EX[i], EXZ[i], EX2[i] = combineMatrices(y_indices_to_use[i], block_EZs, block_EZZTs, block_EXs, block_EXZs, block_EX2s)
 		new_A, new_mus, new_sigmas, new_decay_coef = Mstep(Y, EZ, EZZT, EX, EXZ, EX2, A, mus, sigmas, decay_coef, singleSigma = singleSigma)
-		checkNoNans([EZ, EZZT, EX, EXZ, EX2, new_A, new_mus, new_sigmas, new_decay_coef])
+		try:
+			checkNoNans([EZ, EZZT, EX, EXZ, EX2, new_A, new_mus, new_sigmas, new_decay_coef])
+		except:
+			print "Error: algorithm failed to converge. Try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA."
 		paramsNotChanging = True
 		max_param_change = 0
 		for new, old in [[new_mus, mus], [new_A, A], [new_sigmas, sigmas], [new_decay_coef, decay_coef]]:
