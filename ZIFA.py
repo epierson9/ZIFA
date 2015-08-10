@@ -1,5 +1,4 @@
 import numpy as np
-from pylab import *
 from scipy.optimize import curve_fit, minimize
 from sklearn.decomposition import FactorAnalysis
 from copy import deepcopy
