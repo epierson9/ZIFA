@@ -343,8 +343,8 @@ def testInputData(Y):
 	if (Y < 0).sum() > 0:
 		raise Exception('Your input matrix contains negative values. ZIFA takes as input log read counts and should not contain negative values.')
 	zero_fracs = Y_is_zero.mean(axis = 0)
-	Y_is_all_zero = zero_fracs == 1.
-	if Y_is_all_zero.sum() > 0:
+	column_is_all_zero = zero_fracs == 1.
+	if column_is_all_zero.sum() > 0:
 		raise Exception("Your Y matrix has columns which are entirely zero; please filter out these columns and rerun the algorithm.")
 
 def fitModel(Y, K, singleSigma = False):
