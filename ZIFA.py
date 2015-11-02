@@ -334,6 +334,18 @@ def initializeParams(Y, K, singleSigma = False, makePlot = False):
 		title('Decay Coef is %2.3f; MSE is %2.3f' % (decay_coef, mse))
 		show()
 	return A, mus, sigmas, decay_coef
+def testInputData(Y):
+	if (Y - np.array(Y, dtype = 'int32')).sum() < 1e-6:
+		raise Exception('Your input matrix is entirely integers. It is possible but unlikely that this is correct: ZIFA takes as input LOG read counts, not read counts.')
+	Y_is_zero = np.abs(Y) < 1e-6
+	if (Y_is_zero).sum() == 0:
+		raise Exception('Your input matrix contains no zeros. This is possible but highly unlikely in scRNA-seq data. ZIFA takes as input log read counts.')
+	if (Y < 0).sum() > 0:
+		raise Exception('Your input matrix contains negative values. ZIFA takes as input log read counts and should not contain negative values.')
+	zero_fracs = Y_is_zero.mean(axis = 0)
+	Y_is_all_zero = zero_fracs == 1.
+	if Y_is_all_zero.sum() > 0:
+		raise Exception("Your Y matrix has columns which are entirely zero; please filter out these columns and rerun the algorithm.")
 
 def fitModel(Y, K, singleSigma = False):
 	"""
@@ -347,9 +359,9 @@ def fitModel(Y, K, singleSigma = False):
 	params: a dictionary of model parameters. Throughout, we refer to lambda as "decay_coef". 
 	"""
 	N, D = Y.shape
-	Y_is_all_zero = (np.abs(Y) < 1e-6).sum(axis = 0) == N
-	if Y_is_all_zero.sum() > 0:
-		raise Exception("Your Y matrix has columns which are entirely zero; please filter out these columns and rerun the algorithm.")
+	if D > 2000:
+		print 'Warning: this dataset has a large number of genes. If ZIFA takes too long to run, try using block_ZIFA.py instead'
+	testInputData(Y)
 	print 'Running zero-inflated factor analysis with N = %i, D = %i, K = %i' % (N, D, K)
 	#initialize the parameters
 	np.random.seed(23)

@@ -1,4 +1,4 @@
-import ZIFA
+import ZIFA, block_ZIFA
 import numpy as np
 from pylab import *
 import random
@@ -50,7 +50,7 @@ def testAlgorithm():
 	k = 2
 	sigma = .3
 	n_clusters = 3
-	decay_coef = .03
+	decay_coef = .1
 	X, Y, Z, ids = generateSimulatedDimensionalityReductionData(n_clusters, n, d, k, sigma, decay_coef)
 
 	Zhat, params = ZIFA.fitModel(Y, k)

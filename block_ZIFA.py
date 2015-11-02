@@ -408,7 +408,21 @@ def combineMatrices(y_indices, all_EZs, all_EZZTs, all_EXs, all_EXZs, all_EX2s):
 	combined_EZ = combined_EZ / n_blocks
 	combined_EZZT = combined_EZZT / n_blocks
 	return combined_EZ, combined_EZZT, combined_EX, combined_EXZ, combined_EX2
-		
+def testInputData(Y):
+	if (Y - np.array(Y, dtype = 'int32')).sum() < 1e-6:
+		raise Exception('Your input matrix is entirely integers. It is possible but unlikely that this is correct: ZIFA takes as input LOG read counts, not read counts.')
+	Y_is_zero = np.abs(Y) < 1e-6
+	if (Y_is_zero).sum() == 0:
+		raise Exception('Your input matrix contains no zeros. This is possible but highly unlikely in scRNA-seq data. ZIFA takes as input log read counts.')
+	if (Y < 0).sum() > 0:
+		raise Exception('Your input matrix contains negative values. ZIFA takes as input log read counts and should not contain negative values.')
+	zero_fracs = Y_is_zero.mean(axis = 0)
+	Y_is_all_zero = zero_fracs == 1.
+	if Y_is_all_zero.sum() > 0:
+		raise Exception("Your Y matrix has columns which are entirely zero; please filter out these columns and rerun the algorithm.")
+	if (zero_fracs > .9).sum() > 0:
+		print 'Warning: your Y matrix contains genes which are frequently zero. If the algorithm fails to converge, try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA.'
+
 def fitModel(Y, K, singleSigma = False, n_blocks = None):
 	"""
 	fits the model to data.
@@ -424,9 +438,7 @@ def fitModel(Y, K, singleSigma = False, n_blocks = None):
 	if n_blocks is None:
 		n_blocks = max(1, D / 500)
 		print 'Number of blocks has been set to', n_blocks
-	Y_is_all_zero = (np.abs(Y) < 1e-6).sum(axis = 0) == N
-	if Y_is_all_zero.sum() > 0:
-		raise Exception("Your Y matrix has columns which are entirely zero; please filter out these columns and rerun the algorithm.")
+	testInputData(Y)
 	print 'Running block zero-inflated factor analysis with N = %i, D = %i, K = %i, n_blocks = %i' % (N, D, K, n_blocks)
 	#generate blocks. 
 	y_indices_to_use = generateIndices(n_blocks, N, D) 
@@ -468,7 +480,7 @@ def fitModel(Y, K, singleSigma = False, n_blocks = None):
 		try:
 			checkNoNans([EZ, EZZT, EX, EXZ, EX2, new_A, new_mus, new_sigmas, new_decay_coef])
 		except:
-			print "Error: algorithm failed to converge. Try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA."
+			raise Exception("Error: algorithm failed to converge. Try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA.")
 		paramsNotChanging = True
 		max_param_change = 0
 		for new, old in [[new_mus, mus], [new_A, A], [new_sigmas, sigmas], [new_decay_coef, decay_coef]]:
@@ -489,6 +501,8 @@ def fitModel(Y, K, singleSigma = False, n_blocks = None):
 		n_iter += 1	
 	params = {'A':A, 'mus':mus, 'sigmas':sigmas, 'decay_coef':decay_coef, 'X':EX}
 	return EZ, params
-
+if __name__ == '__main__':
+	Y = np.array([[1.2, -2], [0, 4]])
+	fitModel(Y, 2)
 
 
