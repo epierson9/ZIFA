@@ -20,7 +20,7 @@ Please contact emmap1@cs.stanford.edu with any questions or comments.
 
 Download the code: `git clone https://github.com/epierson9/ZIFA`
 
-Install the package: `cd ZIFA` than `python setup.py install`
+Install the package: `cd ZIFA` then `python setup.py install`
 
 ##Sample usage
 
