@@ -1,4 +1,4 @@
-import ZIFA, block_ZIFA
+from ZIFA import ZIFA,block_ZIFA
 import numpy as np
 from pylab import *
 import random

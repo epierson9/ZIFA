@@ -16,21 +16,36 @@ This code requires pylab, scipy, numpy, and scikits.learn for full functionality
 
 Please contact emmap1@cs.stanford.edu with any questions or comments. 
 
+##Installation
+
+Download the code: `git clone https://github.com/epierson9/ZIFA`
+
+Install the package: `cd ZIFA` than `python setup.py install`
+
 ##Sample usage
 
-import ZIFA
+```python
+from ZIFA import ZIFA
+from ZIFA import block_ZIFA
+```
 
+To fit ZIFA:
+
+```python
 Z, model_params = ZIFA.fitModel(Y, k)
+```
 
-or 
+To fit with the block algorithm:
 
-import block_ZIFA
-
+```python
 Z, model_params = block_ZIFA.fitModel(Y, k)
- 
+```
+
 or 
 
+```python
 Z, model_params = block_ZIFA.fitModel(Y, k, n_blocks = desired_n_blocks)
+```
 
 where Y is the observed zero-inflated data, k is the desired number of latent dimensions, and Z is the low-dimensional projection and desired_n_blocks is the number of blocks to divide genes into. By default, the number of blocks is set to n_genes / 500 (yielding a block size of approximately 500). 
  
