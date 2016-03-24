@@ -53,7 +53,7 @@ def testAlgorithm():
 	decay_coef = .1
 	X, Y, Z, ids = generateSimulatedDimensionalityReductionData(n_clusters, n, d, k, sigma, decay_coef)
 
-	Zhat, params = ZIFA.fitModel(Y, k)
+	Zhat, params = block_ZIFA.fitModel(Y, k)
 	colors = ['red', 'blue', 'green']
 	cluster_ids = sorted(list(set(ids)))
 	model = FactorAnalysis(n_components = k)
