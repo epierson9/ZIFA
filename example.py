@@ -38,7 +38,7 @@ def generateSimulatedDimensionalityReductionData(n_clusters, n, d, k, sigma, dec
 	cutoff = np.exp(-decay_coef * (Y ** 2))
 	zero_mask = rand_matrix < cutoff
 	Y[zero_mask] = 0
-	print 'Fraction of zeros: %2.3f; decay coef: %2.3f' % ((Y == 0).mean(), decay_coef)
+	print('Fraction of zeros: %2.3f; decay coef: %2.3f' % ((Y == 0).mean(), decay_coef))
 
 	return X, Y, Z.transpose(), cluster_ids
 

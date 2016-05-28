@@ -355,7 +355,7 @@ def generateIndices(n_blocks, N, D):
 	y_indices_to_use[i][j] is the indices of block j in sample i. 
 	"""
 	y_indices_to_use = []
-	idxs = range(D)
+	idxs = list(range(D))
 	n_in_block = int(1.*D / n_blocks)
 	for i in range(N):
 		partition = []
@@ -372,7 +372,7 @@ def generateIndices(n_blocks, N, D):
 			n_added += len(idxs_in_block)
 		y_indices_to_use.append(partition)
 		if i == 0:
-			print 'Block sizes', [len(a) for a in partition]
+			print('Block sizes', [len(a) for a in partition])
 		assert(n_added == D)
 	return y_indices_to_use
 
@@ -419,10 +419,10 @@ def testInputData(Y):
 	zero_fracs = Y_is_zero.mean(axis = 0)
 	column_is_all_zero = zero_fracs == 1.
 	if column_is_all_zero.sum() > 0:
-		print "Warning: Your Y matrix has %i columns which are entirely zero; filtering these out before continuing." % (column_is_all_zero.sum())
+		print("Warning: Your Y matrix has %i columns which are entirely zero; filtering these out before continuing." % (column_is_all_zero.sum()))
 		Y = Y[:, ~column_is_all_zero]
 	elif (zero_fracs > .9).sum() > 0:
-		print 'Warning: your Y matrix contains genes which are frequently zero. If the algorithm fails to converge, try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA.'
+		print('Warning: your Y matrix contains genes which are frequently zero. If the algorithm fails to converge, try filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA.')
 	return Y
 
 def runEMAlgorithm(Y, K, singleSigma = False, n_blocks = None):
@@ -430,9 +430,9 @@ def runEMAlgorithm(Y, K, singleSigma = False, n_blocks = None):
 	N, D = Y.shape
 	if n_blocks is None:
 		n_blocks = max(1, D / 500)
-		print 'Number of blocks has been set to', n_blocks
+		print('Number of blocks has been set to', n_blocks)
 	
-	print 'Running block zero-inflated factor analysis with N = %i, D = %i, K = %i, n_blocks = %i' % (N, D, K, n_blocks)
+	print('Running block zero-inflated factor analysis with N = %i, D = %i, K = %i, n_blocks = %i' % (N, D, K, n_blocks))
 	#generate blocks. 
 	y_indices_to_use = generateIndices(n_blocks, N, D) 
 
@@ -473,7 +473,7 @@ def runEMAlgorithm(Y, K, singleSigma = False, n_blocks = None):
 		try:
 			checkNoNans([EZ, EZZT, EX, EXZ, EX2, new_A, new_mus, new_sigmas, new_decay_coef])
 		except:
-			print "Error: algorithm failed to converge. Usual solutions to this problem: filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA. Automatically retrying ZIFA when filtering out genes."
+			print("Error: algorithm failed to converge. Usual solutions to this problem: filtering out genes which are zero more than 80 - 90% of the time, or using standard ZIFA. Automatically retrying ZIFA when filtering out genes.")
 			return None
 
 		paramsNotChanging = True
@@ -489,10 +489,10 @@ def runEMAlgorithm(Y, K, singleSigma = False, n_blocks = None):
 		sigmas = new_sigmas
 		decay_coef = new_decay_coef
 		if paramsNotChanging:
-			print 'Param change below threshold %2.3e after %i iterations' % (param_change_thresh, n_iter)
+			print('Param change below threshold %2.3e after %i iterations' % (param_change_thresh, n_iter))
 			break
 		if n_iter >= max_iter:
-			print 'Maximum number of iterations reached; terminating loop'
+			print('Maximum number of iterations reached; terminating loop')
 		n_iter += 1	
 	params = {'A':A, 'mus':mus, 'sigmas':sigmas, 'decay_coef':decay_coef, 'X':EX}
 	return EZ, params
@@ -509,7 +509,7 @@ def fitModel(Y, K, singleSigma = False, n_blocks = None, p0_thresh = .95):
 	params: a dictionary of model parameters. Throughout, we refer to lambda as "decay_coef". 
 	"""
 	assert(p0_thresh >= 0 and p0_thresh <= 1)
-	print 'Filtering out all genes which are zero in more than %2.1f%% of samples. To change this, change p0_thresh.' % (p0_thresh * 100)
+	print('Filtering out all genes which are zero in more than %2.1f%% of samples. To change this, change p0_thresh.' % (p0_thresh * 100))
 	Y = Y[:, (np.abs(Y) < 1e-6).mean(axis = 0) <= p0_thresh]
 	results = runEMAlgorithm(Y, K, singleSigma = singleSigma, n_blocks = n_blocks)
 	
@@ -517,9 +517,9 @@ def fitModel(Y, K, singleSigma = False, n_blocks = None, p0_thresh = .95):
 		Y_is_zero = np.abs(Y) < 1e-6
 		max_zero_frac = Y_is_zero.mean(axis = 0).max()
 		new_max_zero_frac = max_zero_frac * .95
-		print 'Previously, maximum fraction of zeros for a gene was %2.3f; now lowering that to %2.3f and rerunning ZIFA' % (max_zero_frac, new_max_zero_frac)
+		print('Previously, maximum fraction of zeros for a gene was %2.3f; now lowering that to %2.3f and rerunning ZIFA' % (max_zero_frac, new_max_zero_frac))
 		Y = Y[:, Y_is_zero.mean(axis = 0) < new_max_zero_frac]
-		print 'After filtering out genes with too many zeros, %i samples and %i genes' % Y.shape
+		print('After filtering out genes with too many zeros, %i samples and %i genes' % Y.shape)
 		results = runEMAlgorithm(Y, K, singleSigma = singleSigma, n_blocks = n_blocks)
 	return results
 
