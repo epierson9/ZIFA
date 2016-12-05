@@ -82,7 +82,6 @@ def testAlgorithm():
 	
 	
 	show()
-	
 
 if __name__ == '__main__':
 	testAlgorithm()
