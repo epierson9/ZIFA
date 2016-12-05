@@ -12,7 +12,9 @@ Decreasing the block size may decrease runtime but will also produce less reliab
 
 See example.py for a full example demonstrating superior performance over factor analysis. 
 
-This code requires pylab, scipy, numpy, and scikits.learn for full functionality. 
+See read_in_real_data_example.py for a example demonstrating how to read in real data using pandas and run ZIFA on it. 
+
+ZIFA requires pylab, scipy, numpy, and scikits.learn for full functionality. 
 
 Please contact emmap1@cs.stanford.edu with any questions or comments. 
 
