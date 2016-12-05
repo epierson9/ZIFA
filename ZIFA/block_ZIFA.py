@@ -429,7 +429,7 @@ def runEMAlgorithm(Y, K, singleSigma = False, n_blocks = None):
 	Y = testInputData(Y)
 	N, D = Y.shape
 	if n_blocks is None:
-		n_blocks = max(1, D / 500)
+		n_blocks = int(max(1, D / 500))
 		print 'Number of blocks has been set to', n_blocks
 	
 	print 'Running block zero-inflated factor analysis with N = %i, D = %i, K = %i, n_blocks = %i' % (N, D, K, n_blocks)
