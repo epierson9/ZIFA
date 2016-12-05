@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 from scipy.optimize import curve_fit, minimize
 from sklearn.decomposition import FactorAnalysis
@@ -360,9 +361,9 @@ def fitModel(Y, K, singleSigma = False):
 	"""
 	N, D = Y.shape
 	if D > 2000:
-		print 'Warning: this dataset has a large number of genes. If ZIFA takes too long to run, try using block_ZIFA.py instead'
+		print('Warning: this dataset has a large number of genes. If ZIFA takes too long to run, try using block_ZIFA.py instead')
 	testInputData(Y)
-	print 'Running zero-inflated factor analysis with N = %i, D = %i, K = %i' % (N, D, K)
+	print('Running zero-inflated factor analysis with N = %i, D = %i, K = %i' % (N, D, K))
 	#initialize the parameters
 	np.random.seed(23)
 	A, mus, sigmas, decay_coef = initializeParams(Y, K, singleSigma = singleSigma)
@@ -388,10 +389,10 @@ def fitModel(Y, K, singleSigma = False):
 		sigmas = new_sigmas
 		decay_coef = new_decay_coef
 		if paramsNotChanging:
-			print 'Param change below threshold %2.3e after %i iterations' % (param_change_thresh, n_iter)
+			print('Param change below threshold %2.3e after %i iterations' % (param_change_thresh, n_iter))
 			break
 		if n_iter >= max_iter:
-			print 'Maximum number of iterations reached; terminating loop'
+			print('Maximum number of iterations reached; terminating loop')
 		n_iter += 1	
 	EZ, EZZT, EX, EXZ, EX2 = Estep(Y, A, mus, sigmas, decay_coef)
 	params = {'A':A, 'mus':mus, 'sigmas':sigmas, 'decay_coef':decay_coef}
