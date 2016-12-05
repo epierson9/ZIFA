@@ -1,3 +1,4 @@
+from __future__ import print_function
 from ZIFA import ZIFA,block_ZIFA
 import numpy as np
 from pylab import *
@@ -43,7 +44,7 @@ def generateSimulatedDimensionalityReductionData(n_clusters, n, d, k, sigma, dec
 	return X, Y, Z.transpose(), cluster_ids
 
 def testAlgorithm():
-	random.seed(30)
+	random.seed(35)
 	np.random.seed(32)
 	n = 200
 	d = 20
