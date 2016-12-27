@@ -1,6 +1,19 @@
 # ZIFA
 Zero-inflated dimensionality reduction algorithm for single-cell data. Created by Emma Pierson and Christopher Yau.
 
+Citation: 
+
+@article{pierson2015zifa,
+  title={ZIFA: Dimensionality reduction for zero-inflated single-cell gene expression analysis},
+  author={Pierson, Emma and Yau, Christopher},
+  journal={Genome biology},
+  volume={16},
+  number={1},
+  pages={1},
+  year={2015},
+  publisher={BioMed Central}
+}
+
 If you are using count data, we recommend taking the log (ie, Y = log2(1 + count_data)) prior to using ZIFA. 
 
 Reference: Dimensionality reduction for zero-inflated single cell gene expression analysis. 
