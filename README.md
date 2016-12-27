@@ -1,9 +1,9 @@
 # ZIFA
 Zero-inflated dimensionality reduction algorithm for single-cell data. Created by Emma Pierson and Christopher Yau.
 
-Citation: 
+## Citation
 
-@article{pierson2015zifa,
+ @article{pierson2015zifa,
   title={ZIFA: Dimensionality reduction for zero-inflated single-cell gene expression analysis},
   author={Pierson, Emma and Yau, Christopher},
   journal={Genome biology},
@@ -14,9 +14,9 @@ Citation:
   publisher={BioMed Central}
 }
 
-If you are using count data, we recommend taking the log (ie, Y = log2(1 + count_data)) prior to using ZIFA. 
+## Instructions
 
-Reference: Dimensionality reduction for zero-inflated single cell gene expression analysis. 
+If you are using count data, we recommend taking the log (ie, Y = log2(1 + count_data)) prior to using ZIFA. 
 
 Algorithm code is contained in ZIFA.py and block_ZIFA.py. For datasets with more than a few thousand genes, we recommend using block_ZIFA, which subsamples genes in blocks to increase efficiency; it should yield similar results to ZIFA. Runtime for block ZIFA on the full single-cell dataset from Pollen et al, 2014 (~250 samples, ~20,000 genes) is approximately 15 minutes on a quadcore Mac Pro. 
 
