@@ -329,6 +329,7 @@ def initializeParams(Y, K, singleSigma = False, makePlot = False):
 	decay_coef = decay_coef[0]
 	mse = np.mean(np.abs(ps - np.exp(-decay_coef * (np.array(means) ** 2))))
 	if (mse > 0) and makePlot:
+		from matplotlib.pyplot import figure, scatter, plot, title, show
 		figure()
 		scatter(means, ps)
 		plot(np.arange(min(means), max(means), .1), np.exp(-decay_coef * (np.arange(min(means), max(means), .1) ** 2)))
