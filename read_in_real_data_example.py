@@ -1,5 +1,3 @@
-import csv
-import scipy
 import numpy as np
 from ZIFA import ZIFA
 from ZIFA import block_ZIFA

@@ -3,9 +3,6 @@ import numpy as np
 from scipy.optimize import curve_fit, minimize
 from sklearn.decomposition import FactorAnalysis
 from copy import deepcopy
-from collections import Counter
-import random
-from scipy.stats import multivariate_normal
 import warnings
 
 """
@@ -95,7 +92,6 @@ def Estep(Y, A, mus, sigmas, decay_coef):
 		# 1. compute P(Z, X_0)
 		Y_i = Y[i, :]
 		Y_is_zero = np.abs(Y_i) < 1e-6
-		zero_indices = np.array([True for a in range(K)] + [np.abs(Y_i[j]) < 1e-6 for j in range(D)])
 		dim = K + D  # this is dimension of matrix
 
 		# 2. compute P(Z, X_0 | Y_+)
@@ -110,8 +106,6 @@ def Estep(Y, A, mus, sigmas, decay_coef):
 		else:
 			magical_matrix = 2 * decay_coef * (mult_diag(augmented_D, matrixToInvert) + augmentedA_0 * (augmentedA_0.T * matrixToInvert))
 		magical_matrix[:, :K] = 0
-
-		sigma_11 = augmentedA_0 * augmentedA_0.T + np.diag(augmented_D)
 
 		if (Y_is_zero).sum() < D:
 			sigma_xz = np.array(sigma_c - mult_diag(augmented_D, np.array(magical_matrix), left=False) - (magical_matrix * augmentedA_0) * ((np.eye(K) - augmentedA_plus.T * sigma_22_inv * augmentedA_plus) * augmentedA_0.T))
@@ -151,9 +145,7 @@ def computeMatrixInLastStep(A, zero_indices, sigmas, K, sigma_c, decay_coef, sig
 	A_0 = np.matrix(A[zero_indices, :])
 	A_plus = np.matrix(A[~zero_indices, :])
 	sigmas_0 = sigmas[zero_indices]
-	sigmas_plus = sigmas[~zero_indices]
 
-	E_xx = sigma_c[K:, :][:, K:]
 	E_xz = sigma_c[K:, :][:, :K]
 	E_00_prime_inv = np.matrix(invertFast(A_0, sigmas_0 ** 2 + 1 / (2. * decay_coef)))
 	E_plusplus_inv = sigma_22_inv
@@ -163,7 +155,6 @@ def computeMatrixInLastStep(A, zero_indices, sigmas, K, sigma_c, decay_coef, sig
 		inv_matrix = (1 / (2. * decay_coef)) * E_00_prime_inv
 
 	elif (A_0.shape[0] < A_0.shape[1]):
-		E_plusplus = A_plus * A_plus.T + np.diag(sigmas_plus[:, 0] ** 2)
 		inv_matrix = np.linalg.inv(2. * decay_coef * (np.linalg.inv(E_00_prime_inv) - E_0plus * E_plusplus_inv * E_0plus.T))
 
 	else:
