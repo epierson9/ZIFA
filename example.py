@@ -1,7 +1,6 @@
 from __future__ import print_function
-from ZIFA import ZIFA,block_ZIFA
+from ZIFA import ZIFA, block_ZIFA
 import numpy as np
-from pylab import *
 import random
 from copy import deepcopy
 from sklearn.decomposition import FactorAnalysis
@@ -51,6 +50,8 @@ def generateSimulatedDimensionalityReductionData(n_clusters, n, d, k, sigma, dec
 
 
 def testAlgorithm():
+	import matplotlib.pyplot as plt
+
 	random.seed(35)
 	np.random.seed(32)
 
@@ -69,31 +70,31 @@ def testAlgorithm():
 	model = FactorAnalysis(n_components=k)
 	factor_analysis_Zhat = model.fit_transform(Y)
 
-	figure(figsize=[15, 5])
+	plt.figure(figsize=[15, 5])
 
-	subplot(131)
+	plt.subplot(131)
 	for id in cluster_ids:
-		scatter(Z[ids == id, 0], Z[ids == id, 1], color=colors[id - 1], s=4)
-		title('True Latent Positions\nFraction of Zeros %2.3f' % (Y == 0).mean())
-		xlim([-4, 4])
-		ylim([-4, 4])
+		plt.scatter(Z[ids == id, 0], Z[ids == id, 1], color=colors[id - 1], s=4)
+		plt.title('True Latent Positions\nFraction of Zeros %2.3f' % (Y == 0).mean())
+		plt.xlim([-4, 4])
+		plt.ylim([-4, 4])
 
-	subplot(132)
+	plt.subplot(132)
 	for id in cluster_ids:
-		scatter(Zhat[ids == id, 0], Zhat[ids == id, 1], color=colors[id - 1], s=4)
-		xlim([-4, 4])
-		ylim([-4, 4])
-		title('ZIFA Estimated Latent Positions')
+		plt.scatter(Zhat[ids == id, 0], Zhat[ids == id, 1], color=colors[id - 1], s=4)
+		plt.xlim([-4, 4])
+		plt.ylim([-4, 4])
+		plt.title('ZIFA Estimated Latent Positions')
 		# title(titles[method])
 
-	subplot(133)
+	plt.subplot(133)
 	for id in cluster_ids:
-		scatter(factor_analysis_Zhat[ids == id, 0], factor_analysis_Zhat[ids == id, 1], color = colors[id - 1], s = 4)
-		xlim([-4, 4])
-		ylim([-4, 4])
-		title('Factor Analysis Estimated Latent Positions')
+		plt.scatter(factor_analysis_Zhat[ids == id, 0], factor_analysis_Zhat[ids == id, 1], color = colors[id - 1], s = 4)
+		plt.xlim([-4, 4])
+		plt.ylim([-4, 4])
+		plt.title('Factor Analysis Estimated Latent Positions')
 
-	show()
+	plt.show()
 
 
 if __name__ == '__main__':
