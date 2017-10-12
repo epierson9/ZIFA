@@ -29,7 +29,7 @@ See read_in_real_data_example.py for a example demonstrating how to read in real
 
 ZIFA requires pylab, scipy, numpy, and scikits.learn for full functionality. 
 
-Please contact emmap1@cs.stanford.edu with any questions or comments. 
+Please contact emmap1@cs.stanford.edu with any questions or comments. Prior to issuing pull requests, please confirm that your code passes the tests by running unitTests.py. The tests take about 30 seconds to run. 
 
 ##Installation
 
