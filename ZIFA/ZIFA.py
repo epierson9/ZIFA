@@ -322,6 +322,8 @@ def decayCoefObjectiveFn(x, Y, EX2):
 		obj = sum(sum(Y_is_zero * (-EX2 * x) + (1 - Y_is_zero) * log_exp_Y))
 		grad = sum(sum(Y_is_zero * (-EX2) + (1 - Y_is_zero) * y_squared * exp_ratio))
 
+		if (type(obj) is not np.float64) or (type(grad) is not np.float64):
+			raise Exception("Unexpected behavior in optimizing decay coefficient lambda. Please contact emmap1@cs.stanford.edu.")
 		if type(obj) is np.float64:
 			obj = -np.array([obj])
 		if type(grad) is np.float64:
