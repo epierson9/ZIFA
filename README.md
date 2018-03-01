@@ -27,9 +27,11 @@ See example.py for a full example demonstrating superior performance over factor
 
 See read_in_real_data_example.py for a example demonstrating how to read in real data using pandas and run ZIFA on it. 
 
-ZIFA requires pylab, scipy, numpy, and scikits.learn for full functionality. 
+ZIFA requires pylab, scipy, numpy, and scikit.learn for full functionality. 
 
-Please contact emmap1@cs.stanford.edu with any questions or comments. Prior to issuing pull requests, please confirm that your code passes the tests by running unitTests.py. The tests take about 30 seconds to run. 
+Prior to issuing pull requests, please confirm that your code passes the tests by running unitTests.py. (If you are using a different version of scipy, numpy, or sklearn, the results may be slightly different -- in that case, please report how much you have to increase the absolute_tolerance parameter to get them to pass.) The tests take about 30 seconds to run. 
+
+Please contact emmap1@cs.stanford.edu with any questions or comments. 
 
 ##Installation
 
