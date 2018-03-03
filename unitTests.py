@@ -36,7 +36,10 @@ def unitTests():
     decay_coef = .1
 
     X, Y, Z, ids = generateSimulatedDimensionalityReductionData(n_clusters, n, d, k, sigma, decay_coef)
+    old_Y = deepcopy(Y)
     Zhat, params = ZIFA.fitModel(Y, k)
+    assert np.allclose(Y, old_Y)
+
 
     # for Z and A, we compare the absolute values of the parameters because some package versions appear to flip the sign (which is fine and will not affect results)
     assert np.allclose(np.abs(Zhat[-1, :]), np.abs([ 1.50067515, 0.04742477]), atol=absolute_tolerance)
@@ -45,12 +48,14 @@ def unitTests():
     assert np.allclose(params['sigmas'][0], 0.30219903, atol=absolute_tolerance)
 
     Zhat, params = block_ZIFA.fitModel(Y, k) 
+    assert np.allclose(Y, old_Y)
     assert np.allclose(np.abs(Zhat[-1, :]), np.abs([1.49712162, 0.05823952]), atol=absolute_tolerance) # this is slightly different (though highly correlated) because ZIFA runs one extra half-step of EM
     assert np.allclose(np.abs(params['A'][0, :]), np.abs([ 0.66884415, -0.17173555]), atol=absolute_tolerance)
     assert np.allclose(params['decay_coef'], 0.10458794970222711, atol=absolute_tolerance)
     assert np.allclose(params['sigmas'][0], 0.30219903, atol=absolute_tolerance)
 
     Zhat, params = block_ZIFA.fitModel(Y, k, n_blocks = 3)
+    assert np.allclose(Y, old_Y)
     assert np.allclose(np.abs(Zhat[-1, :]), np.abs([  9.84455438e-01, 4.50924335e-02]), atol=absolute_tolerance)
 
     n = 50
@@ -61,14 +66,17 @@ def unitTests():
     decay_coef = .1
 
     X, Y, Z, ids = generateSimulatedDimensionalityReductionData(n_clusters, n, d, k, sigma, decay_coef)
+    old_Y = deepcopy(Y)
     Zhat, params = block_ZIFA.fitModel(Y, k, n_blocks = 3)
+    assert np.allclose(Y, old_Y)
     assert np.allclose(np.abs(Zhat[-1, :]), np.abs([-1.69609638,-0.5475882, 0.08008015]), atol=absolute_tolerance)
 
     X, Y, Z, ids = generateSimulatedDimensionalityReductionData(n_clusters, n, d, k, sigma, decay_coef)
+    old_Y = deepcopy(Y)
     Zhat, params = ZIFA.fitModel(Y, k)
     print(Zhat[-1, :])
     assert np.allclose(np.abs(Zhat[-1, :]), np.abs([-0.63075905, -0.77361427, -0.11544281]), atol=absolute_tolerance)
-
+    assert np.allclose(Y, old_Y)
     
     print('Tests passed with absolute tolerance %2.3e!' % absolute_tolerance)
 

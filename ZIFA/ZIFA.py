@@ -421,6 +421,7 @@ def fitModel(Y, K, singleSigma=False):
 	EZ: the estimated positions in the latent space, n_samples x K
 	params: a dictionary of model parameters. Throughout, we refer to lambda as "decay_coef".
 	"""
+	Y = deepcopy(Y)
 	N, D = Y.shape
 
 	if D > 2000:

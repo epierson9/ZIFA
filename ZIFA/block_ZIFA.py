@@ -1,6 +1,7 @@
 from __future__ import print_function
 import numpy as np
 import random
+from copy import deepcopy
 
 from .ZIFA import checkNoNans, Estep, Mstep, initializeParams
 
@@ -233,6 +234,8 @@ def fitModel(Y, K, singleSigma=False, n_blocks=None, p0_thresh=.95):
 	EZ: the estimated positions in the latent space, n_samples x K
 	params: a dictionary of model parameters. Throughout, we refer to lambda as "decay_coef".
 	"""
+
+	Y = deepcopy(Y)
 	assert(p0_thresh >= 0 and p0_thresh <= 1)
 
 	print('Filtering out all genes which are zero in more than %2.1f%% of samples. To change this, change p0_thresh.' % (p0_thresh * 100))
