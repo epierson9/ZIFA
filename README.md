@@ -29,11 +29,11 @@ See read_in_real_data_example.py for a example demonstrating how to read in real
 
 ZIFA requires pylab, scipy, numpy, and scikit.learn for full functionality. 
 
-Prior to issuing pull requests, please confirm that your code passes the tests by running unitTests.py. (If you are using a different version of scipy, numpy, or sklearn, the results may be slightly different -- in that case, please report how much you have to increase the absolute_tolerance parameter to get them to pass.) The tests take about 30 seconds to run. 
+Prior to issuing pull requests, please confirm that your code passes the tests by running unitTests.py. (If you are using a different version of scipy, numpy, or sklearn, the results may be slightly different -- in that case, please report how much you have to increase the absolute_tolerance parameter to get them to pass. If your package versions are very different, the unit tests may fail entirely even though the main code will still run.) The tests take about 30 seconds to run. 
 
 Please contact emmap1@cs.stanford.edu with any questions or comments. 
 
-##Installation
+## Installation
 
 Download the code: `git clone https://github.com/epierson9/ZIFA`
 
